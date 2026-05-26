@@ -39,8 +39,8 @@ images:
         packer:
             ssh_username: ubuntu
             source_image: "444234ec-eb75-4e4a-81dc-7ce3e7e08038" # Ubuntu-22.04-20260316
-            flavor: xlarge
-            volume_size: "100"
+            flavor: medium
+            volume_size: "10"
             network_id: "4b5f690e-8232-439b-9964-8d28b3108b03" # public net
             playbook_file: "ubuntu-laniakea-dev.yml"
 
