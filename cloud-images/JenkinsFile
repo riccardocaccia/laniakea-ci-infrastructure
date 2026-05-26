@@ -5,44 +5,25 @@ pipeline {
 		stage('deploy') {
 			steps {
 				withCredentials([string(credentialsId: 'iam-recas-laniakea-bot-password', variable: 'IAM_CLIENT_PASSWORD')]) {
-					sh '''
-                                        python3 -m venv build/
-					. build/bin/activate
-                                        pip install -r ./cloud-images/requirements.txt
-                                        eval `oidc-agent-service use`
-                                        . /home/ubuntu/elixir-italy-dev.sh
-                                        expect expect.sh $IAM_CLIENT_PASSWORD
-                                        export IAM_ACCESS_TOKEN=$(oidc-token iam-recas-laniakea-bot)
-					export OS_TOKEN=$(openstack --os-auth-type v3oidcaccesstoken --os-access-token ${IAM_ACCESS_TOKEN} token issue  -f json | jq -r ".id")
-					echo $OS_TOKEN
-					#export PACKER_LOG=1
-					mkdir report
-					cd cloud-images
-					python3 build_images.py
+
+                    sh '''
+			        python3 -m venv build/
+    				build/bin/pip install -r ./cloud-images/requirements.txt
+    				eval `oidc-agent-service use`
+	    			. /home/ubuntu/elixir-italy-dev.sh
+   	 				expect expect.sh $IAM_CLIENT_PASSWORD
+    				export PATH=$PATH:/home/ubuntu/.local/bin
+	   			 	export IAM_ACCESS_TOKEN=$(oidc-token iam-recas-laniakea-bot)
+    				export OS_TOKEN=$(openstack --os-auth-type v3oidcaccesstoken --os-access-token ${IAM_ACCESS_TOKEN} token issue -f json | jq -r ".id")
+    				echo $OS_TOKEN
+                    #export PACKER_LOG=1
+	    			mkdir report
+    				cd cloud-images
+ 				   	../build/bin/python3 build_images.py
 					'''
 				}
 			}
 		}
 	}
-	post { 
-		success {
-			emailext (
-			subject: '$DEFAULT_SUBJECT',
-			body: '$DEFAULT_CONTENT',
-			to: '$DEFAULT_RECIPIENTS',
-			attachLog: true
-                        )
-			cleanWs()
-		}
-		failure {
-			emailext ( 
-                	subject: '$DEFAULT_SUBJECT',
-                	body: '$DEFAULT_CONTENT',
-                	to: '$DEFAULT_RECIPIENTS',
-			attachLog: true
-            		)
-			cleanWs()
-		}
-	}
-}
+	
 
