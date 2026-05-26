@@ -50,7 +50,7 @@ images:
         build: yes
         packer:
             ssh_username: ubuntu
-            source_image: "444234ec-eb75-4e4a-81dc-7ce3e7e08038"
+            source_image: "19332caa-3b85-4acc-8889-7176f72abe63"
             flavor: medium
             volume_size: "10"
             network_id: "4b5f690e-8232-439b-9964-8d28b3108b03" 
