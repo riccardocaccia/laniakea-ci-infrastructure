@@ -184,25 +184,27 @@ def build_image(path):
 
 #________________________________
 def build_images():
-
     create_report(report_file)
-
     images_info = load_list()
-
     # Create a temporary directory
     tempdir = tempfile.mkdtemp(dir='./')
-    logger.debug('The created temporary directory is %s' % tempdir) # move to log
-
+    logger.debug('The created temporary directory is %s' % tempdir)
     # Create packer json
     images_to_build = parse_list(images_info, tempdir)
     logger.debug(images_to_build)
-
-    # Build Packer images
-    build_images_with_packer(images_to_build)
-
+    
+    # Build Packer images and check exit codes
+    failed = False
+    for path in images_to_build:
+        status = build_image(path)
+        if status != 0:
+            logger.error('Build FAILED for: ' + path)
+            failed = True
+    if failed:
+        sys.exit(1)
+        
     # Upload report to github
     #upload_report_to_github(report_file)
-
 #______________________________________
 if __name__ == "__main__":
    build_images()
