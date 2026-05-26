@@ -7,6 +7,7 @@ pipeline {
 				withCredentials([string(credentialsId: 'iam-recas-laniakea-bot-password', variable: 'IAM_CLIENT_PASSWORD')]) {
 
                     sh '''
+                    set -e
 			        python3 -m venv build/
     				build/bin/pip install -r ./cloud-images/requirements.txt
     				eval `oidc-agent-service use`
