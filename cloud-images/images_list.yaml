@@ -54,7 +54,6 @@ images:
             flavor: medium
             volume_size: "10"
             network_id: "4b5f690e-8232-439b-9964-8d28b3108b03" 
-            security_group: ["ssh"]
             playbook_file: "ubuntu-laniakea-dev.yml"
 
     rstudio-minimal:
