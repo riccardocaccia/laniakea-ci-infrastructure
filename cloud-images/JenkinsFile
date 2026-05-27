@@ -17,7 +17,7 @@ pipeline {
 					export OS_TOKEN=$(openstack --os-auth-type v3oidcaccesstoken --os-access-token ${IAM_ACCESS_TOKEN} token issue  -f json | jq -r ".id")
 					echo $OS_TOKEN
 					#export PACKER_LOG=1
-					mkdir report
+					mkdir -p report
 					cd cloud-images
 					python3 build_images.py
 					'''
