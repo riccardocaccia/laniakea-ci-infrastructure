@@ -156,11 +156,11 @@ def parse_list(info_list, outpath):
     return images_to_build
 
 #________________________________
-def build_images_with_packer(path_list):
-
-    for template_path in path_list:
-        logger.debug('Start Build')
-        build_image(template_path)
+#def build_images_with_packer(path_list):
+#
+#   for template_path in path_list:
+#        logger.debug('Start Build')
+#        build_image(template_path)
 
 #________________________________
 def build_image(path):
@@ -184,11 +184,16 @@ def build_image(path):
 
 #________________________________
 def build_images():
+    
     create_report(report_file)
+
+
     images_info = load_list()
+    
     # Create a temporary directory
     tempdir = tempfile.mkdtemp(dir='./')
     logger.debug('The created temporary directory is %s' % tempdir)
+    
     # Create packer json
     images_to_build = parse_list(images_info, tempdir)
     logger.debug(images_to_build)
