@@ -130,7 +130,7 @@ def parse_list(info_list, outpath):
             if 'ansible_galaxy_file' in image['packer']:
               ansible_galaxy_file = image['packer']['ansible_galaxy_file']
 
-            sec_groups = ["ssh"]
+            sec_groups = ["ssh", "default"]
             # Render template
             rendered_template = template.render(
                                                 name = name,
