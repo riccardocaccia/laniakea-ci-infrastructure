@@ -130,6 +130,7 @@ def parse_list(info_list, outpath):
             if 'ansible_galaxy_file' in image['packer']:
               ansible_galaxy_file = image['packer']['ansible_galaxy_file']
 
+            sec_groups = ["ssh"]
             # Render template
             rendered_template = template.render(
                                                 name = name,
@@ -139,6 +140,7 @@ def parse_list(info_list, outpath):
                                                 flavor = image['packer']['flavor'],
                                                 volume_size = image['packer']['volume_size'],
                                                 network_id = image['packer']['network_id'],
+                                                security_groups = sec_groups,
                                                 ansible_galaxy_file = ansible_galaxy_file,
                                                 playbook_file = image['packer']['playbook_file']
                                                )
