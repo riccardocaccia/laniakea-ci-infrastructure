@@ -1,4 +1,24 @@
 ---
+# NOTE on Security Groups & Multi-Tenant Deployment:
+# -------------------------------------------------------------------------
+# The security group settings in build_images control the firewall rules for the 
+# temporary VM spawned by Packer. 
+#
+# 1. Same Tenant Deployment:
+#    If this script triggers a build within the SAME tenant where the 
+#    Jenkins Agent resides, using the ["default"] group is sufficient, 
+#    as OpenStack permits internal cross-VM communication by default.
+#
+# 2. Targeting a Different Tenant:
+#    If deploying to a different tenant, the Jenkins Agent 
+#    will be blocked by OpenStack's default tenant isolation. 
+#    In this case, you MUST modify the 'sec_groups' list to include a group 
+#    that explicitly opens Ingress Port 22 (SSH) to the Jenkins Agent IP 
+#    (e.g. ["default", "ssh"]), otherwise Packer will encounter an SSH timeout.
+# -------------------------------------------------------------------------
+sec_groups = ["default", "ssh"]
+
+
 # CMDB currently available image list
 images_db_url: 'https://laniakea-dashboard.cloud.ba.infn.it/cmdb/image/list?include_docs=true'
 
